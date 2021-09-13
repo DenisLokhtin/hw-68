@@ -1,25 +1,45 @@
-import logo from './logo.svg';
+import {nanoid} from "nanoid";
+import AddTaskForm from "./AddTaskForm";
+import AddTask from './AddTask';
 import './App.css';
+import {useState} from "react";
 
-function App() {
+const App = () => {
+    const [task, setTask] = useState([
+        {task: "buy car", id: nanoid()},
+        {task: "buy milk", id: nanoid()},
+        {task: "buy cucumber", id: nanoid()},
+    ]);
+
+    const [currentTask, setCurrentTask] = useState([
+        {currentTask: ''},
+    ]);
+
+    const removeTask = index => {
+        const TaskCopy = [...task];
+        TaskCopy.splice(index, 1);
+        setTask(TaskCopy);
+    };
+
+    const Add = () => {
+        if (currentTask.currentTask !== '') {
+            const tasks = [...task];
+            tasks.push({task: currentTask.currentTask, id: nanoid()});
+            setTask(tasks);
+            setCurrentTask({currentTask: ''});
+        }
+    };
+
+    const printMessage = task.map((task, index) => {
+        return <AddTask key={task.id} message={task.task} remove={() => removeTask(index)}/>
+    });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+      <div>
+          <AddTaskForm Add={() => Add()} set={setCurrentTask}/>
+          {printMessage}
+      </div>
+  )
+};
 
 export default App;
