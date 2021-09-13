@@ -14,7 +14,7 @@ const reducer = (state = initialState, action) => {
         case setShow:
             return {...state, showPost: action.payload};
         case setPost:
-            return {...state, showPost: action.payload}
+            return {...state, posts: action.payload}
         case setMessage:
             return {...state, message: action.payload};
         default:

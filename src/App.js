@@ -21,7 +21,7 @@ function App() {
             await axiosApi.get('/messages.json').then(response => {
                 if (response.data !== null) {
                     const arrayPosts = Object.values(response.data);
-                    setPosts(arrayPosts);
+                    setPosts([...arrayPosts]);
                 }
             });
         } catch (e) {
