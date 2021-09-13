@@ -1,47 +1,42 @@
-.form {
-    margin: 20px;
+body {
+    font-family: sans-serif;
 }
 
-.input {
-    width: 75%;
-    height: 44px;
-    font-size: 16px;
-    padding-left: 15px;
+.navigation {
+    margin-top: 20px;
+    margin-left: 20px;
+    display: inline-block;
 }
 
-.input::placeholder {
-    font-size: 17px;
-    padding-left: 15px;
-    color: black;
+.header {
+    display: inline-block;
+    margin-left: 19%;
+    font-weight: normal;
 }
 
-.btn {
-    width: 20%;
-    margin-left: 25px;
-    height: 50px;
-    font-size: 17px;
-    cursor: pointer;
+.navigation a {
+    margin: 10px;
+    color: #7A7A7A;
+    text-decoration: none;
+    transition: 200ms;
 }
 
-.card {
+.navigation a:hover {
+    color: #484648;
+}
+
+.container {
     display: flex;
-    margin: 20px;
-    border: 1px solid black;
-    text-wrap: normal;
-    width: 94.5%;
-    padding-left: 15px;
-    justify-content: space-between;
+    justify-content: center;
+    margin-top: 10px;
 }
 
-.close {
-    margin-right: 15px;
-    font-size: 22px;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.text {
-    display: inline-block;
-    word-break: break-all;
-    line-height: 38px;
+.container-inner {
+    border-radius: 3px;
+    border: 2px solid black;
+    width: 60%;
+    text-align: center;
+    height: 87vh;
+    overflow: auto;
+    padding: 15px;
 }

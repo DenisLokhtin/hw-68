@@ -1,45 +1,81 @@
-import {nanoid} from "nanoid";
-import AddTaskForm from "./AddTaskForm";
-import AddTask from './AddTask';
+import {BrowserRouter, NavLink, Route, Switch} from "react-router-dom";
+import {useEffect, useState} from "react";
+import axiosApi from './AxiosApi'
+import Home from "./Components/Home/Home";
+import Add from "./Components/Add/Add";
+import About from "./Components/About/About";
+import Contacts from "./Components/Contacts/Contacts";
+import ExpandPost from "./Components/ExpandPost/ExpandPost";
 import './App.css';
-import {useState} from "react";
 
-const App = () => {
-    const [task, setTask] = useState([
-        {task: "buy car", id: nanoid()},
-        {task: "buy milk", id: nanoid()},
-        {task: "buy cucumber", id: nanoid()},
-    ]);
+function App() {
+    const [loading, setLoading] = useState(false);
+    const [posts, setPosts] = useState([]);
+    const [showPost, setShowExpandPost] = useState(false);
 
-    const [currentTask, setCurrentTask] = useState([
-        {currentTask: ''},
-    ]);
-
-    const removeTask = index => {
-        const TaskCopy = [...task];
-        TaskCopy.splice(index, 1);
-        setTask(TaskCopy);
-    };
-
-    const Add = () => {
-        if (currentTask.currentTask !== '') {
-            const tasks = [...task];
-            tasks.push({task: currentTask.currentTask, id: nanoid()});
-            setTask(tasks);
-            setCurrentTask({currentTask: ''});
+    const getMessages = async () => {
+        try {
+            await axiosApi.get('/messages.json').then(response => {
+                if (response.data !== null) {
+                    const arrayPosts = Object.values(response.data)
+                    setPosts(arrayPosts)
+                }
+            });
+            setLoading(true)
+        } finally {
+            setLoading(false);
         }
     };
 
-    const printMessage = task.map((task, index) => {
-        return <AddTask key={task.id} message={task.task} remove={() => removeTask(index)}/>
-    });
+    useEffect(() => {
+        setInterval(() => {
+            getMessages()
+        }, 2000);
+    }, [])
 
-  return (
-      <div>
-          <AddTaskForm Add={() => Add()} set={setCurrentTask}/>
-          {printMessage}
-      </div>
-  )
-};
+    const expandPostShown = () => {
+        if (showPost) {
+            return (
+                <ExpandPost
+                    hidePost={() => setShowExpandPost(false)}
+                    text={(e) => posts[e.currentTarget.id].message}
+                    date={(e) => posts[e.currentTarget.id].date}
+                    title={(e) => posts[e.currentTarget.id].title}
+                />
+            )
+        }
+    }
+
+    return (
+        <>
+            <h2 className="header">My Blog</h2>
+            <BrowserRouter>
+                <div className="navigation">
+                    <NavLink to="/">Home</NavLink>
+                    <NavLink to="/posts/add">Add</NavLink>
+                    <NavLink to="/About">About</NavLink>
+                    <NavLink to="/Contacts">Contacts</NavLink>
+                </div>
+                <div className="container">
+                    <div className="container-inner">
+                        {expandPostShown()}
+                        <Switch>
+                            <Route exact path="/"
+                                   component={() => <Home showPost={() => setShowExpandPost(true)} posts={posts}/>}/>
+                            <Route exact path="/posts"
+                                   component={() => <Home showPost={() => setShowExpandPost(true)} posts={posts}/>}/>
+                            <Route path="/posts/add" component={Add}/>
+                            <Route path="/posts/:id" component={Add}/>
+                            <Route path="/posts/:id/edit" component={About}/>
+                            <Route path="/About" component={About}/>
+                            <Route path="/Contacts" component={Contacts}/>
+                            <Route render={() => <h1>NOT FOUND</h1>}/>
+                        </Switch>
+                    </div>
+                </div>
+            </BrowserRouter>
+        </>
+    );
+}
 
 export default App;
