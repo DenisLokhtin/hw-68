@@ -17,12 +17,10 @@ function App() {
     const setShowExpandPost = (value) => dispatch({type: 'SET SHOW', payload: value});
 
     const getMessages = async () => {
-        console.log(posts)
         try {
             await axiosApi.get('/messages.json').then(response => {
                 if (response.data !== null) {
                     const arrayPosts = Object.values(response.data);
-                    console.log(arrayPosts)
                     setPosts(arrayPosts);
                 }
             });
