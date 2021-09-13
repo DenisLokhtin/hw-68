@@ -7,23 +7,27 @@ import About from "./Components/About/About";
 import Contacts from "./Components/Contacts/Contacts";
 import ExpandPost from "./Components/ExpandPost/ExpandPost";
 import './App.css';
+import {useDispatch, useSelector} from "react-redux";
 
 function App() {
-    const [loading, setLoading] = useState(false);
-    const [posts, setPosts] = useState([]);
-    const [showPost, setShowExpandPost] = useState(false);
+    const dispatch = useDispatch();
+    const posts = useSelector(state => state.posts);
+    const showPost = useSelector(state => state.showPost);
+    const setPosts = (value) => dispatch({type: 'SET POSTS', payload: value});
+    const setShowExpandPost = (value) => dispatch({type: 'SET SHOW', payload: value});
 
     const getMessages = async () => {
+        console.log(posts)
         try {
             await axiosApi.get('/messages.json').then(response => {
                 if (response.data !== null) {
-                    const arrayPosts = Object.values(response.data)
-                    setPosts(arrayPosts)
+                    const arrayPosts = Object.values(response.data);
+                    console.log(arrayPosts)
+                    setPosts(arrayPosts);
                 }
             });
-            setLoading(true)
-        } finally {
-            setLoading(false);
+        } catch (e) {
+            alert(e)
         }
     };
 
@@ -60,10 +64,8 @@ function App() {
                     <div className="container-inner">
                         {expandPostShown()}
                         <Switch>
-                            <Route exact path="/"
-                                   component={() => <Home showPost={() => setShowExpandPost(true)} posts={posts}/>}/>
-                            <Route exact path="/posts"
-                                   component={() => <Home showPost={() => setShowExpandPost(true)} posts={posts}/>}/>
+                            <Route exact path="/" component={() => <Home showPost={() => setShowExpandPost(true)} posts={posts}/>}/>
+                            <Route exact path="/posts" component={() => <Home showPost={() => setShowExpandPost(true)} posts={posts}/>}/>
                             <Route path="/posts/add" component={Add}/>
                             <Route path="/posts/:id" component={Add}/>
                             <Route path="/posts/:id/edit" component={About}/>
