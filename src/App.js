@@ -62,8 +62,10 @@ function App() {
                     <div className="container-inner">
                         {expandPostShown()}
                         <Switch>
-                            <Route exact path="/" component={() => <Home showPost={() => setShowExpandPost(true)} posts={posts}/>}/>
-                            <Route exact path="/posts" component={() => <Home showPost={() => setShowExpandPost(true)} posts={posts}/>}/>
+                            <Route exact path="/"
+                                   component={() => <Home showPost={() => setShowExpandPost(true)} posts={posts}/>}/>
+                            <Route exact path="/posts"
+                                   component={() => <Home showPost={() => setShowExpandPost(true)} posts={posts}/>}/>
                             <Route path="/posts/add" component={Add}/>
                             <Route path="/posts/:id" component={Add}/>
                             <Route path="/posts/:id/edit" component={About}/>

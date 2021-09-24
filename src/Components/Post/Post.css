@@ -1,0 +1,28 @@
+.post {
+    border: 2px solid black;
+    margin: 10px 0;
+    text-align: left;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.date {
+    color: grey;
+    font-size: 13px;
+}
+
+.btn-read {
+    border-radius: 5px;
+    border: 2px solid black;
+    color: black;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px 10px;
+    transition: 200ms;
+    margin-right: 10px;
+}
+
+.btn-read:hover {
+    transform: scale(1.05);
+}
